@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const commando = require('discord.js-commando');
-const {checkURLPrefix, deleteCommandMessages, get} = require('../../util.js');
+const {checkURLPrefix, buildURL, deleteCommandMessages, get} = require('../../util.js');
 
 module.exports = class librariesCommand extends commando.Command {
 	constructor (client) {
@@ -12,14 +12,18 @@ module.exports = class librariesCommand extends commando.Command {
 			'examples': ['libraries'],
 			'guildOnly': true
 		});
-    }
+	}
+	
+	getURL(opt) {
+		return checkURLPrefix(opt.host) ? opt.host : buildURL("http", opt.host, opt.port, opt.httpRoot);
+	}
     
     run (msg, args) {
 		this.client.webDB.loadSettings('tautulli').then((tautulli) => {
 			get({
 				headers: {'accept' : 'application/json',
 				'User-Agent': `Mellow/${process.env.npm_package_version}`},
-				url: (checkURLPrefix(tautulli.host) ? tautulli.host : `http://${tautulli.host}`) + ((tautulli.port) ? ':' + tautulli.port : '') + '/api/v2?apikey=' + tautulli.apikey + '&cmd=get_libraries'
+				url: this.getURL(tautulli) + '/api/v2?apikey=' + tautulli.apikey + '&cmd=get_libraries'
 			}).then((resolve) => {
 				let jsonObject = JSON.parse(resolve.body);
 				let libraryEmbed = new Discord.MessageEmbed()

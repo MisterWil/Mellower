@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const commando = require('discord.js-commando');
-const {checkURLPrefix, deleteCommandMessages, get, post} = require('../../util.js');
+const {checkURLPrefix, buildURL, deleteCommandMessages, get, post} = require('../../util.js');
 
 function outputTVShow(msg, show) {
 	let tvEmbed = new Discord.MessageEmbed()
@@ -11,7 +11,7 @@ function outputTVShow(msg, show) {
 	.setImage(show.banner)
 	.setURL(`https://www.thetvdb.com/?id=${show.id}&tab=series`)
 	.setThumbnail('https://i.imgur.com/9dcDIYe.png')
-	.addField('__Network__', show.network, true)
+	.addField('__Network__', (show.network ? show.network : 'Unknown'), true)
 	.addField('__Status__', show.status, true);
 
 	if (show.available) tvEmbed.addField('__Available__', '✅', true);
@@ -24,13 +24,17 @@ function outputTVShow(msg, show) {
 	return msg.embed(tvEmbed);
 }
 
+function getURL(opt) {
+	return checkURLPrefix(opt.host) ? opt.host : buildURL("http", opt.host, opt.port, opt.urlBase);
+}
+
 function getTVDBID(ombi, msg, name) {
 	return new Promise((resolve, reject) => {
 		get({
 			headers: {'accept' : 'application/json',
 			'ApiKey': ombi.apikey,
 			'User-Agent': `Mellow/${process.env.npm_package_version}`},
-			url: (checkURLPrefix(ombi.host) ? ombi.host : `http://${ombi.host}`) + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/tv/' + name
+			url: getURL(ombi) + '/api/v1/Search/tv/' + name
 		}).then(({response, body}) => {
 			let data = JSON.parse(body)
 
@@ -109,7 +113,7 @@ function requestTVShow(ombi, msg, showMsg, show) {
 					'ApiAlias' : `${msg.author.username}#${msg.author.discriminator}`,
 					'UserName' : ombi.username ? ombi.username : undefined,
 					'User-Agent': `Mellow/${process.env.npm_package_version}`},
-					url: (checkURLPrefix(ombi.host) ? ombi.host : `http://${ombi.host}`) + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Request/tv/',
+					url: getURL(ombi) + '/api/v1/Request/tv/',
 					body: JSON.stringify({ "tvDbId": show.id, "requestAll" : true })
 				}).then((resolve) => {
 					return msg.reply(`Requested ${show.title} in Ombi.`);
@@ -168,7 +172,7 @@ module.exports = class searchTVCommand extends commando.Command {
 				headers: {'accept' : 'application/json',
 				'ApiKey': ombi.apikey,
 				'User-Agent': `Mellow/${process.env.npm_package_version}`},
-				url: (checkURLPrefix(ombi.host) ? ombi.host : `http://${ombi.host}`) + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/tv/info/' + tvdbid
+				url: getURL(ombi) + '/api/v1/Search/tv/info/' + tvdbid
 			})
 			.then(({response, body}) => {
 				let data = JSON.parse(body)
