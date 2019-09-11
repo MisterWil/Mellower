@@ -43,7 +43,12 @@ const checkURLPrefix = function(url) {
     }
 }
 
+const buildURL = function (prefix, host, port, httpRoot) {
+    return prefix + '://' + host + (port ? ':' + port : '') + (httpRoot ? httpRoot + '/' : '');
+}
+
 module.exports = {
+    buildURL,
 	checkURLPrefix,
 	capitalizeFirstLetter,
 	deleteCommandMessages,
