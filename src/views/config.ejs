@@ -59,8 +59,11 @@
   <form class = "form-setting" role = "form" action = "/ombi" method = "post">
     <h2 class="h2-setting">Host</h2>
     <input type = "text" class = "form-control" name = "host" value = "<% if (ombiSettings && ombiSettings.host) { %><%=ombiSettings.host %><% } %>">
+    <p>(URL or Host/IP Address)</p>
     <h2 class="h2-setting">Port</h2>
     <input type = "tel" class = "form-control" name = "port" value = "<% if (ombiSettings && ombiSettings.port) { %><%=ombiSettings.port %><% } %>">
+    <h2 class="h2-setting">URL Base</h2>
+    <input type = "text" class = "form-control" name = "urlBase" value = "<% if (ombiSettings && ombiSettings.urlBase) { %><%=ombiSettings.urlBase %><% } %>">
     <h2 class="h2-setting">API Key</h2>
     <input type = "text" class = "form-control" name = "apiKey" value = "<% if (ombiSettings && ombiSettings.apikey) { %><%=ombiSettings.apikey %><% } %>">
     <h2 class="h2-setting">Request TV Shows (Discord Role Name)</h2>
@@ -81,8 +84,11 @@
   <form class = "form-setting" role = "form" action = "/tautulli" method = "post">
     <h2 class="h2-setting">Host</h2>
     <input type = "text" class = "form-control" name = "host" value = "<% if (tautulliSettings && tautulliSettings.host) { %><%=tautulliSettings.host %><% } %>">
+    <p>(URL or Host/IP Address)</p>
     <h2 class="h2-setting">Port</h2>
     <input type = "tel" class = "form-control" name = "port" value = "<% if (tautulliSettings && tautulliSettings.port) { %><%=tautulliSettings.port %><% } %>">
+    <h2 class="h2-setting">HTTP Root</h2>
+    <input type = "text" class = "form-control" name = "httpRoot" value = "<% if (tautulliSettings && tautulliSettings.httpRoot) { %><%=tautulliSettings.httpRoot %><% } %>">
     <h2 class="h2-setting">API Key</h2>
     <input type = "text" class = "form-control" name = "apiKey" value = "<% if (tautulliSettings && tautulliSettings.apikey) { %><%=tautulliSettings.apikey %><% } %>">
     <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
@@ -94,8 +100,11 @@
   <form class = "form-setting" role = "form" action = "/sonarr" method = "post">
     <h2 class="h2-setting">Host</h2>
     <input type = "text" class = "form-control" name = "host" value = "<% if (sonarrSettings && sonarrSettings.host) { %><%=sonarrSettings.host %><% } %>">
+    <p>(URL or Host/IP Address)</p>
     <h2 class="h2-setting">Port</h2>
     <input type = "tel" class = "form-control" name = "port" value = "<% if (sonarrSettings && sonarrSettings.port) { %><%=sonarrSettings.port %><% } %>">
+    <h2 class="h2-setting">URL Base</h2>
+    <input type = "text" class = "form-control" name = "urlBase" value = "<% if (sonarrSettings && sonarrSettings.urlBase) { %><%=sonarrSettings.urlBase %><% } %>">
     <h2 class="h2-setting">API Key</h2>
     <input type = "text" class = "form-control" name = "apiKey" value = "<% if (sonarrSettings && sonarrSettings.apikey) { %><%=sonarrSettings.apikey %><% } %>">
     <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
@@ -107,8 +116,11 @@
   <form class = "form-setting" role = "form" action = "/radarr" method = "post">
     <h2 class="h2-setting">Host</h2>
     <input type = "text" class = "form-control" name = "host" value = "<% if (radarrSettings && radarrSettings.host) { %><%=radarrSettings.host %><% } %>">
+    <p>(URL or Host/IP Address)</p>
     <h2 class="h2-setting">Port</h2>
     <input type = "tel" class = "form-control" name = "port" value = "<% if (radarrSettings && radarrSettings.port) { %><%=radarrSettings.port %><% } %>">
+    <h2 class="h2-setting">URL Base</h2>
+    <input type = "text" class = "form-control" name = "urlBase" value = "<% if (radarrSettings && radarrSettings.urlBase) { %><%=radarrSettings.urlBase %><% } %>">
     <h2 class="h2-setting">API Key</h2>
     <input type = "text" class = "form-control" name = "apiKey" value = "<% if (radarrSettings && radarrSettings.apikey) { %><%=radarrSettings.apikey %><% } %>">
     <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
