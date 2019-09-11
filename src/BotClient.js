@@ -3,15 +3,16 @@ const path = require('path');
 const sqlite = require('sqlite');
 
 class BotClient extends Commando.Client {
-	constructor (webDB, token, ownerid, commandprefix, unknowncommandresponse, channelname) {
+	constructor (webDB, settings) {
 		super({
-			"owner": (ownerid) ? ownerid : null,
-			"commandPrefix": commandprefix,
-			"unknownCommandResponse": unknowncommandresponse
+			"owner": (settings.ownerid) ? settings.ownerid : null,
+			"commandPrefix": settings.commandprefix,
+			"unknownCommandResponse": settings.unknowncommandresponse
 		});
 		this.webDB = webDB;
-		this.token = token;
-		this.channelName = channelname;
+		this.token = settings.token;
+		this.channelName = settings.channelname;
+		this.deleteCommands = settings.deletecommandmessages
 		this.isReady = false;
 	}
 

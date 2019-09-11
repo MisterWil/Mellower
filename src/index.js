@@ -7,9 +7,9 @@ let start = function () {
     let webDB = new Database('WebSettings');
     webDB.init().then((w) => {
         setTimeout(() => {
-            webDB.loadSettings('bot').then((bSettings) => {
-                if (bSettings && bSettings.token) {
-                    bot = new BotClient(webDB, bSettings.token, bSettings.ownerid, bSettings.commandprefix, bSettings.unknowncommandresponse);
+            webDB.loadSettings('bot').then((botSettings) => {
+                if (botSettings && botSettings.token) {
+                    bot = new BotClient(webDB, botSettings);
                     bot.init().catch(() => { console.error('Failed initializing DiscordBot. Is your token correct?') });
                 } else console.log('There is no bot token provided. Please check your configuration!');
                 new WebClient(webDB, bot).init();
