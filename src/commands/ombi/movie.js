@@ -34,36 +34,50 @@ function getTMDbID(ombi, msg, name) {
 
 			if (data.length > 1) {
 				let fieldContent = '';
-				data.forEach((movie, i) => {
-					fieldContent += `${i+1}) ${movie.title} `
-					if (movie.releaseDate) fieldContent += `(${movie.releaseDate.substring(0,4)}) `
-					fieldContent += `[[TheMovieDb](https://www.themoviedb.org/movie/${movie.theMovieDbId})]\n`
-				})
+
+				for (const [i, movie] of data.entries()) {
+					let movieContent = `${i+1}) ${movie.title} `
+					if (movie.releaseDate) movieContent += `(${movie.releaseDate.substring(0,4)}) `
+					movieContent += `[[TheMovieDb](https://www.themoviedb.org/movie/${movie.theMovieDbId})]\n`
+
+					if ((fieldContent.length + movieContent.length) > 1024) {
+						break
+					}
+
+					fieldContent += movieContent
+				}
 			
 				let showEmbed = new Discord.MessageEmbed()
 				showEmbed.setTitle('Ombi Movie Search')
 				.setDescription('Please select one of the search results. To abort answer **cancel**')
 				.addField('__Search Results__', fieldContent);
-				msg.embed(showEmbed);
-		
-				msg.channel.awaitMessages(m => (!isNaN(parseInt(m.content)) || m.content.startsWith('cancel')) && m.author.id == msg.author.id, { max: 1, time: 120000, errors: ['time'] })
-				.then((collected) => {
-					let message = collected.first().content
-					let selection = parseInt(message)
-		
-					if (message.startsWith('cancel')) {
+
+				msg.embed(showEmbed)
+				.then((message) => {
+					msg.channel.awaitMessages(m => (!isNaN(parseInt(m.content)) || m.content.startsWith('cancel')) && m.author.id == msg.author.id, { max: 1, time: 120000, errors: ['time'] })
+					.then((collected) => {
+						let message = collected.first().content
+						let selection = parseInt(message)
+			
+						if (message.startsWith('cancel')) {
+							msg.reply('Cancelled command.');
+						} else if (selection > 0 && selection <= data.length) {
+							return resolve(data[selection - 1].id)
+						} else {
+							msg.reply('Please enter a valid selection!')
+						}
+						return resolve()
+					})
+					.catch((collected) => {
 						msg.reply('Cancelled command.');
-					} else if (selection > 0 && selection <= data.length) {
-						return resolve(data[selection - 1].id)
-					} else {
-						msg.reply('Please enter a valid selection!')
-					}
+						return resolve()
+					});
+				})
+				.catch ((error) => {
+					console.error(error);
+					msg.reply('There was an error in completing your request.');
 					return resolve()
 				})
-				.catch((collected) => {
-					msg.reply('Cancelled command.');
-					return resolve()
-				});
 			} else if (!data.length) {
 				msg.reply('Couldn\'t find the movie you were looking for. Is the name correct?');
 				return resolve()

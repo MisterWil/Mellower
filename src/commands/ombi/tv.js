@@ -36,36 +36,50 @@ function getTVDBID(ombi, msg, name) {
 
 			if (data.length > 1) {
 				let fieldContent = '';
-				data.forEach((show, i) => {
-					fieldContent += `${i+1}) ${show.title} `
-					if (show.firstAired) fieldContent += `(${show.firstAired.substring(0,4)}) `
-					fieldContent += `[[TheTVDb](https://www.thetvdb.com/?id=${show.id}&tab=series)]\n`
-				})
+
+				for (const [i, show] of data.entries()) {
+					let showContent = `${i+1}) ${show.title} `
+					if (show.firstAired) showContent += `(${show.firstAired.substring(0,4)}) `
+					showContent += `[[TheTVDb](https://www.thetvdb.com/?id=${show.id}&tab=series)]\n`
+
+					if ((fieldContent.length + showContent.length) > 1024) {
+						break
+					}
+
+					fieldContent += showContent
+				}
 			
 				let showEmbed = new Discord.MessageEmbed()
 				showEmbed.setTitle('Ombi TV Show Search')
 				.setDescription('Please select one of the search results. To abort answer **cancel**')
 				.addField('__Search Results__', fieldContent);
-				msg.embed(showEmbed);
-		
-				msg.channel.awaitMessages(m => (!isNaN(parseInt(m.content)) || m.content.startsWith('cancel')) && m.author.id == msg.author.id, { max: 1, time: 120000, errors: ['time'] })
-				.then((collected) => {
-					let message = collected.first().content
-					let selection = parseInt(message)
-		
-					if (message.startsWith('cancel')) {
+
+				msg.embed(showEmbed)
+				.then((message) => {
+					msg.channel.awaitMessages(m => (!isNaN(parseInt(m.content)) || m.content.startsWith('cancel')) && m.author.id == msg.author.id, { max: 1, time: 120000, errors: ['time'] })
+					.then((collected) => {
+						let message = collected.first().content
+						let selection = parseInt(message)
+			
+						if (message.startsWith('cancel')) {
+							msg.reply('Cancelled command.');
+						} else if (selection > 0 && selection <= data.length) {
+							return resolve(data[selection - 1].id)
+						} else {
+							msg.reply('Please enter a valid selection!')
+						}
+						return resolve()
+					})
+					.catch((collected) => {
 						msg.reply('Cancelled command.');
-					} else if (selection > 0 && selection <= data.length) {
-						return resolve(data[selection - 1].id)
-					} else {
-						msg.reply('Please enter a valid selection!')
-					}
+						return resolve()
+					});
+				})
+				.catch ((error) => {
+					console.error(error);
+					msg.reply('There was an error in completing your request.');
 					return resolve()
 				})
-				.catch((collected) => {
-					msg.reply('Cancelled command.');
-					return resolve()
-				});
 			} else if (!data.length) {
 				msg.reply('Couldn\'t find the TV show you were looking for. Is the name correct?');
 				return resolve()
