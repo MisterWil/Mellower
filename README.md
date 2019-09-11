@@ -1,9 +1,8 @@
-# Mellow
-
-[![Discord](https://img.shields.io/badge/Discord-Mellow-7289DA.svg?style=flat-square)](https://discord.gg/zx2BWp2)
+# Mellower
 
 Discord Bot which can communicate with several APIs like Ombi, Sonarr, Radarr and Tautulli which are related to home streaming.
-Based off of node:10.16.2
+
+Hard fork of [Mellow](https://github.com/v0idp/Mellow) which I suggest you actually use.
 
 ## Features
 
@@ -20,7 +19,8 @@ Based off of node:10.16.2
 ## Installation & Configuration
 
 Before starting your bot you will need to invite it to your server first. I recommend using this for beginners: https://discordapi.com/permissions.html
-Your bot will need following permissions:
+
+Your bot will need following permissions (518208):
 
 * Read Messages
 * Embed Links
@@ -48,25 +48,37 @@ yarn start
 
 After starting the bot you will need to configure it by visiting ``youripordomain:5060``
 and filling out the Bot Settings which will start the bot with your token.
+
 Note: It's recommended to set a username and password in General Settings. This way only you can access the web interface.
 
 ## Docker Setup & Start
 
 If you want to use this bot in a docker container you have to follow these steps:
-* Pull from docker hub: ``docker pull voidp/mellow``
+* Pull from docker hub: ``docker pull misterwil/mellower``
 * Run docker image:
 ```
 docker run -d --restart=always --name mellow \
-   -v /opt/appdata/mellow/:/usr/src/app/data/ \
+   -v /opt/appdata/mellower/:/usr/src/app/data/ \
    -p 5060:5060 \
-   voidp/mellow
+   misterwil/mellower
 ```
-* if you want persistent data create a folder in ``/opt/appdata/mellow/``
+* if you want persistent data create a folder in ``/opt/appdata/mellower/``
 or use docker compose. A yaml file is provided for this purpose.
+
+## Development
+
+You can start the bot in nodemon auto-restart mode by using:
+```sh
+yarn dev
+```
 
 ## Contributing
 
-1. Fork it (<https://github.com/v0idp/Mellow/fork>)
+I suggest you contribute to the [official Mellow](https://github.com/v0idp/Mellow) above all else.
+
+However:
+
+1. Fork it (<https://github.com/MisterWil/Mellower/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)

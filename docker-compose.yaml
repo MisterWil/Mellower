@@ -5,5 +5,5 @@ services:
     ports:
       - "5060:5060"
     volumes: 
-      - /opt/appdata/mellow/:/usr/src/app/data/
+      - /opt/appdata/mellower/:/usr/src/app/data/
     restart: always

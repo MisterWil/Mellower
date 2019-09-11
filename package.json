@@ -1,14 +1,14 @@
 {
-  "name": "mellow",
-  "version": "1.6.0",
+  "name": "mellower",
+  "version": "1.0.0",
   "main": "src/index.js",
-  "author": "void* <voidp@protonmail.com> (https://github.com/v0idp)",
+  "author": "misterwil <wilrader@gmail.com> (https://github.com/MisterWil)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/v0idp/Mellow"
+    "url": "https://github.com/MisterWil/Mellower"
   },
   "bugs": {
-    "url": "https://github.com/v0idp/Mellow/issues"
+    "url": "https://github.com/MisterWil/Mellower/issues"
   },
   "keywords": [
     "discord",
@@ -18,7 +18,8 @@
   "license": "GPL-3.0",
   "scripts": {
     "prestart": "yarn install",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "dependencies": {
     "bluebird": "^3.5.5",
@@ -30,5 +31,8 @@
     "moment": "^2.24.0",
     "request": "^2.88.0",
     "sqlite": "^3.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.2"
   }
 }
