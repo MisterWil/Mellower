@@ -26,24 +26,30 @@ class Database {
 
     saveSettings(request) {
         if (request.path == '/general') {
-            this.db.run('DELETE FROM general');
-            this.db.run('INSERT INTO general (username, password) VALUES(?, ?)',
+            this.awaitRun('DELETE FROM general');
+            this.awaitRun('INSERT INTO general (username, password) VALUES(?, ?)',
                 [request.body.username, request.body.password]);
         } else if (request.path == '/bot') {
-            this.db.run('DELETE FROM bot');
-            this.db.run('INSERT INTO bot (token, ownerid, commandprefix, deletecommandmessages, unknowncommandresponse, channelname) VALUES(?, ?, ?, ?, ?, ?)',
+            this.awaitRun('DELETE FROM bot');
+            this.awaitRun('INSERT INTO bot (token, ownerid, commandprefix, deletecommandmessages, unknowncommandresponse, channelname) VALUES(?, ?, ?, ?, ?, ?)',
                 [request.body.token, request.body.ownerID, request.body.commandPrefix, (request.body.deleteCommandMessages) ? 'true' : 'false', (request.body.unknownCommandResponse) ? 'true' : 'false', request.body.channelName]);
         } else if (request.path == '/ombi' && request.body.apiKey != '' && request.body.host != '') {
-            this.db.run('DELETE FROM ' + request.path.replace('/', ''));
-            this.db.run('INSERT INTO ombi (host, port, apikey, requesttv, requestmovie, username) VALUES(?, ?, ?, ?, ?, ?)',
+            this.awaitRun('DELETE FROM ' + request.path.replace('/', ''));
+            this.awaitRun('INSERT INTO ombi (host, port, apikey, requesttv, requestmovie, username) VALUES(?, ?, ?, ?, ?, ?)',
                 [request.body.host, request.body.port, request.body.apiKey, request.body.requestTV, request.body.requestMovie, request.body.userName]);
         } else if ((request.path == '/tautulli' || request.path == '/sonarr' || request.path == '/radarr') && request.body.apiKey != '' && request.body.host != '') {
-            this.db.run('DELETE FROM ' + request.path.replace('/', ''));
-            this.db.run('INSERT INTO placeholder (host, port, apikey) VALUES(?, ?, ?)'.replace('placeholder', request.path.replace('/', '')),
+            this.awaitRun('DELETE FROM ' + request.path.replace('/', ''));
+            this.awaitRun('INSERT INTO placeholder (host, port, apikey) VALUES(?, ?, ?)'.replace('placeholder', request.path.replace('/', '')),
                 [request.body.host, request.body.port, request.body.apiKey]);
         } else {
             return;
         }
+    }
+
+    async awaitRun(query, params) {
+        await Promise.all([
+            this.db.run(query, params)
+          ]);
     }
 
     openDB(path) {
