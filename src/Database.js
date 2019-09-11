@@ -35,12 +35,16 @@ class Database {
                 [request.body.token, request.body.ownerID, request.body.commandPrefix, (request.body.deleteCommandMessages) ? 'true' : 'false', (request.body.unknownCommandResponse) ? 'true' : 'false', request.body.channelName]);
         } else if (request.path == '/ombi' && request.body.apiKey != '' && request.body.host != '') {
             this.awaitRun('DELETE FROM ' + request.path.replace('/', ''));
-            this.awaitRun('INSERT INTO ombi (host, port, apikey, requesttv, requestmovie, username) VALUES(?, ?, ?, ?, ?, ?)',
-                [request.body.host, request.body.port, request.body.apiKey, request.body.requestTV, request.body.requestMovie, request.body.userName]);
-        } else if ((request.path == '/tautulli' || request.path == '/sonarr' || request.path == '/radarr') && request.body.apiKey != '' && request.body.host != '') {
+            this.awaitRun('INSERT INTO ombi (host, port, urlBase, apikey, requesttv, requestmovie, username) VALUES(?, ?, ?, ?, ?, ?, ?)',
+                [request.body.host, request.body.port, request.body.urlBase, request.body.apiKey, request.body.requestTV, request.body.requestMovie, request.body.userName]);
+        } else if (request.path == '/tautulli') {
             this.awaitRun('DELETE FROM ' + request.path.replace('/', ''));
-            this.awaitRun('INSERT INTO placeholder (host, port, apikey) VALUES(?, ?, ?)'.replace('placeholder', request.path.replace('/', '')),
-                [request.body.host, request.body.port, request.body.apiKey]);
+            this.awaitRun('INSERT INTO tautulli (host, port, httpRoot, apikey) VALUES(?, ?, ?, ?)',
+                [request.body.host, request.body.port, request.body.httpRoot, request.body.apiKey]);
+        } else if ((request.path == '/sonarr' || request.path == '/radarr') && request.body.apiKey != '' && request.body.host != '') {
+            this.awaitRun('DELETE FROM ' + request.path.replace('/', ''));
+            this.awaitRun('INSERT INTO placeholder (host, port, urlBase, apikey) VALUES(?, ?, ?, ?)'.replace('placeholder', request.path.replace('/', '')),
+                [request.body.host, request.body.port, request.body.urlBase, request.body.apiKey]);
         } else {
             return;
         }
