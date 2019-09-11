@@ -1,6 +1,6 @@
 FROM node:lts
 
-LABEL maintainer="void* <voidp@protonmail.com>"
+LABEL maintainer="misterwil* <wilrader@gmail.com>"
 
 USER root
 
