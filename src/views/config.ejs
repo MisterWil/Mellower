@@ -41,16 +41,21 @@
     <input type = "text" class = "form-control" name = "channelName" value = "<% if (botSettings && botSettings.channelname) { %><%=botSettings.channelname %><% } %>">
     <p>(Leave blank to watch all channels.)</p>
     <div class="slide">
-      <input type="checkbox" value="true" id="slide" name="deleteCommandMessages" <% if (botSettings && botSettings.deletecommandmessages == 'true') { %> <? checked ?> <% } %>/>
-      <label for="slide"></label>
+      <input type="checkbox" value="true" id="deleteCommandMessages-slide" name="deleteCommandMessages" <% if (botSettings && botSettings.deletecommandmessages == 'true') { %> <? checked ?> <% } %>/>
+      <label for="deleteCommandMessages-slide"></label>
     </div>
     <h2 class="h2-setting">Delete Command Messages</h2>
     <div class="slide">
-        <input type="checkbox" value="true" id="slide2" name="unknownCommandResponse" <% if (botSettings && botSettings.unknowncommandresponse == 'true') { %> <? checked ?> <% } %>/>
-        <label for="slide2"></label>
-      </div>
+        <input type="checkbox" value="true" id="unknownCommandResponse-slide" name="unknownCommandResponse" <% if (botSettings && botSettings.unknowncommandresponse == 'true') { %> <? checked ?> <% } %>/>
+        <label for="unknownCommandResponse-slide"></label>
+    </div>
       <h2 class="h2-setting">Unknown Command Response</h2>
-    <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
+    <div class="slide">
+      <input type="checkbox" value="true" id="silentTimeout-slide" name="silentTimeout" <% if (botSettings && botSettings.silentTimeout == 'true') { %> <? checked ?> <% } %>/>
+      <label for="silentTimeout-slide"></label>
+    </div>
+    <h2 class="h2-setting">Slient Timeouts</h2>
+  <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
   </form>
 </div>
 

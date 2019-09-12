@@ -31,8 +31,8 @@ class Database {
                 [request.body.username, request.body.password]);
         } else if (request.path == '/bot') {
             this.awaitRun('DELETE FROM bot');
-            this.awaitRun('INSERT INTO bot (token, ownerid, commandprefix, deletecommandmessages, unknowncommandresponse, channelname) VALUES(?, ?, ?, ?, ?, ?)',
-                [request.body.token, request.body.ownerID, request.body.commandPrefix, (request.body.deleteCommandMessages) ? 'true' : 'false', (request.body.unknownCommandResponse) ? 'true' : 'false', request.body.channelName]);
+            this.awaitRun('INSERT INTO bot (token, ownerid, commandprefix, deletecommandmessages, unknowncommandresponse, channelname, silentTimeout) VALUES(?, ?, ?, ?, ?, ?, ?)',
+                [request.body.token, request.body.ownerID, request.body.commandPrefix, (request.body.deleteCommandMessages) ? 'true' : 'false', (request.body.unknownCommandResponse) ? 'true' : 'false', request.body.channelName, (request.body.silentTimeout) ? 'true' : 'false']);
         } else if (request.path == '/ombi' && request.body.apiKey != '' && request.body.host != '') {
             this.awaitRun('DELETE FROM ' + request.path.replace('/', ''));
             this.awaitRun('INSERT INTO ombi (host, port, urlBase, apikey, requesttv, requestmovie, username) VALUES(?, ?, ?, ?, ?, ?, ?)',

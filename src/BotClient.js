@@ -13,6 +13,7 @@ class BotClient extends Commando.Client {
 		this.token = settings.token;
 		this.channelName = settings.channelname;
 		this.deleteCommands = settings.deletecommandmessages
+		this.silentTimeout = settings.silentTimeout === 'true' ? true : false
 		this.isReady = false;
 	}
 

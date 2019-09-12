@@ -2,6 +2,8 @@ const Discord = require('discord.js');
 const commando = require('discord.js-commando');
 const {checkURLPrefix, buildURL, deleteCommandMessages, get, post} = require('../../util.js');
 
+const TIMEOUT = 60000; // 60 seconds in milliseconds
+
 function outputMovie(msg, movie) {
 	let movieEmbed = new Discord.MessageEmbed()
 	.setTitle(`${movie.title} ${(movie.releaseDate) ? `(${movie.releaseDate.split('T')[0].substring(0,4)})` : ''}`)
@@ -26,7 +28,7 @@ function getURL(opt) {
 	return checkURLPrefix(opt.host) ? opt.host : buildURL("http", opt.host, opt.port, opt.urlBase);
 }
 
-function getTMDbID(ombi, msg, name) {
+function getTMDbID(client, ombi, msg, name) {
 	return new Promise((resolve, reject) => {
 		get({
 			headers: {'accept' : 'application/json',
@@ -58,13 +60,14 @@ function getTMDbID(ombi, msg, name) {
 
 				msg.embed(showEmbed)
 				.then((message) => {
-					msg.channel.awaitMessages(m => (!isNaN(parseInt(m.content)) || m.content.startsWith('cancel')) && m.author.id == msg.author.id, { max: 1, time: 120000, errors: ['time'] })
+					msg.channel.awaitMessages(m => (!isNaN(parseInt(m.content)) || m.content.startsWith('cancel')) && m.author.id == msg.author.id, { max: 1, time: TIMEOUT, errors: ['time'] })
 					.then((collected) => {
 						let message = collected.first().content
 						let selection = parseInt(message)
 			
 						if (message.startsWith('cancel')) {
-							msg.reply('Cancelled command.');
+							if (!client.silentTimeout)
+								msg.reply('Cancelled command.');
 						} else if (selection > 0 && selection <= data.length) {
 							return resolve(data[selection - 1].id)
 						} else {
@@ -73,7 +76,9 @@ function getTMDbID(ombi, msg, name) {
 						return resolve()
 					})
 					.catch((collected) => {
-						msg.reply('Cancelled command.');
+						if (!client.silentTimeout)
+								msg.reply('Cancelled command.');
+
 						return resolve()
 					});
 				})
@@ -162,7 +167,7 @@ module.exports = class searchMovieCommand extends commando.Command {
 				return msg.reply('Please enter a valid TMDb ID!');
 			}
 		} else {
-			tmdbid = await getTMDbID(ombi, msg, args.name)
+			tmdbid = await getTMDbID(this.client, ombi, msg, args.name)
 		}
 
 		if (tmdbid) {
