@@ -28,7 +28,9 @@ class WebServer {
     return async (req, res) => {
       const post = req.body
       this.db.getSettings('general').then((table) => {
-        if (post.username == table.username && post.password == table.password) {
+        const username = post.username || ''
+        const password = post.password || ''
+        if (username === table.getOrDefault('username', '') && password === table.getOrDefault('password', '')) {
           req.session.user_id = 10000
           res.redirect('/config')
         } else {

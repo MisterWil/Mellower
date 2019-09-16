@@ -22,7 +22,8 @@
     "dev": "nodemon src/index.js",
     "lint": "standard",
     "mocha": "mocha",
-    "test": "standard && mocha"
+    "test": "standard && nyc --reporter=html --reporter=text mocha",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "dependencies": {
     "bluebird": "^3.5.5",
@@ -39,8 +40,11 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
+    "coveralls": "^3.0.6",
     "dirty-chai": "^2.0.1",
     "mocha": "^6.2.0",
-    "nodemon": "^1.19.2"
+    "nodemon": "^1.19.2",
+    "nyc": "^14.1.1",
+    "standard": "^14.3.0"
   }
 }

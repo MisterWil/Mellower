@@ -1,4 +1,7 @@
 node_modules
 /yarn.lock
 /data/*.sqlite3
+/data_test*
+.nyc_output
+coverage
 .vscode
