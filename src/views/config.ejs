@@ -34,27 +34,30 @@
     <h2 class="h2-setting">Token</h2>
     <input type = "text" class = "form-control" name = "token" value = "<% if (botSettings && botSettings.token) { %><%=botSettings.token %><% } %>" required>
     <h2 class="h2-setting">Owner ID</h2>
-    <input type = "tel" class = "form-control" name = "ownerID" value = "<% if (botSettings && botSettings.ownerid) { %><%=botSettings.ownerid %><% } %>">
+    <input type = "tel" class = "form-control" name = "ownerid" value = "<% if (botSettings && botSettings.ownerid) { %><%=botSettings.ownerid %><% } %>">
     <h2 class="h2-setting">Command Prefix</h2>
-    <input type = "text" class = "form-control" name = "commandPrefix" value = "<% if (botSettings && botSettings.commandprefix) { %><%=botSettings.commandprefix %><% } %>" required>
-    <h2 class="h2-setting">Channel to Monitor</h2>
-    <input type = "text" class = "form-control" name = "channelName" value = "<% if (botSettings && botSettings.channelname) { %><%=botSettings.channelname %><% } %>">
+    <input type = "text" class = "form-control" name = "commandprefix" value = "<% if (botSettings && botSettings.commandprefix) { %><%=botSettings.commandprefix %><% } %>" required>
+    <h2 class="h2-setting">Channel Name to Monitor</h2>
+    <input type = "text" class = "form-control" name = "channelname" value = "<% if (botSettings && botSettings.channelname) { %><%=botSettings.channelname %><% } %>">
     <p>(Leave blank to watch all channels.)</p>
-    <div class="slide">
-      <input type="checkbox" value="true" id="deleteCommandMessages-slide" name="deleteCommandMessages" <% if (botSettings && botSettings.deletecommandmessages == 'true') { %> <? checked ?> <% } %>/>
-      <label for="deleteCommandMessages-slide"></label>
-    </div>
-    <h2 class="h2-setting">Delete Command Messages</h2>
-    <div class="slide">
-        <input type="checkbox" value="true" id="unknownCommandResponse-slide" name="unknownCommandResponse" <% if (botSettings && botSettings.unknowncommandresponse == 'true') { %> <? checked ?> <% } %>/>
-        <label for="unknownCommandResponse-slide"></label>
-    </div>
-      <h2 class="h2-setting">Unknown Command Response</h2>
-    <div class="slide">
-      <input type="checkbox" value="true" id="silentTimeout-slide" name="silentTimeout" <% if (botSettings && botSettings.silentTimeout == 'true') { %> <? checked ?> <% } %>/>
-      <label for="silentTimeout-slide"></label>
-    </div>
-    <h2 class="h2-setting">Slient Timeouts</h2>
+    <p>
+      <select name="deletecommandmessages">
+        <option value="false">Never Delete Command Messages</option>
+        <option value="true"<% if (botSettings && botSettings.deletecommandmessages == 'true') { %> selected <% } %>>Always Delete Command Messages</option>
+      </select>
+    </p>
+    <p>
+      <select name="unknowncommandresponse">
+        <option value="false">Never Respond to Unknown Commands</option>
+        <option value="true"<% if (botSettings && botSettings.unknowncommandresponse == 'true') { %> selected <% } %>>Always Respond to Unknown Commands</option>
+      </select>
+    </p>
+    <p>
+      <select name="silentTimeout">
+        <option value="false">Never Timeout Silently</option>
+        <option value="true"<% if (botSettings && botSettings.silentTimeout == 'true') { %> selected <% } %>>Always Timeout Silently</option>
+      </select>
+    </p>
   <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
   </form>
 </div>
@@ -70,15 +73,15 @@
     <h2 class="h2-setting">URL Base</h2>
     <input type = "text" class = "form-control" name = "urlBase" value = "<% if (ombiSettings && ombiSettings.urlBase) { %><%=ombiSettings.urlBase %><% } %>">
     <h2 class="h2-setting">API Key</h2>
-    <input type = "text" class = "form-control" name = "apiKey" value = "<% if (ombiSettings && ombiSettings.apikey) { %><%=ombiSettings.apikey %><% } %>">
+    <input type = "text" class = "form-control" name = "apikey" value = "<% if (ombiSettings && ombiSettings.apikey) { %><%=ombiSettings.apikey %><% } %>">
     <h2 class="h2-setting">Request TV Shows (Discord Role Name)</h2>
-    <input type = "text" class = "form-control" name = "requestTV" value = "<% if (ombiSettings && ombiSettings.requesttv) { %><%=ombiSettings.requesttv %><% } %>">
+    <input type = "text" class = "form-control" name = "requesttv" value = "<% if (ombiSettings && ombiSettings.requesttv) { %><%=ombiSettings.requesttv %><% } %>">
     <p>(Leave blank if anyone can request.)</p>
     <h2 class="h2-setting">Request Movies (Discord Role Name)</h2>
-    <input type = "text" class = "form-control" name = "requestMovie" value = "<% if (ombiSettings && ombiSettings.requestmovie) { %><%=ombiSettings.requestmovie %><% } %>">
+    <input type = "text" class = "form-control" name = "requestmovie" value = "<% if (ombiSettings && ombiSettings.requestmovie) { %><%=ombiSettings.requestmovie %><% } %>">
     <p>(Leave blank if anyone can request.)</p>
     <h2 class="h2-setting">Ombi Username</h2>
-    <input type = "text" class = "form-control" name = "userName" value = "<% if (ombiSettings && ombiSettings.username) { %><%=ombiSettings.username %><% } %>">
+    <input type = "text" class = "form-control" name = "username" value = "<% if (ombiSettings && ombiSettings.username) { %><%=ombiSettings.username %><% } %>">
     <p>(Enter Ombi username if you want custom permissions.)</p>
     <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
   </form>
@@ -95,7 +98,7 @@
     <h2 class="h2-setting">HTTP Root</h2>
     <input type = "text" class = "form-control" name = "httpRoot" value = "<% if (tautulliSettings && tautulliSettings.httpRoot) { %><%=tautulliSettings.httpRoot %><% } %>">
     <h2 class="h2-setting">API Key</h2>
-    <input type = "text" class = "form-control" name = "apiKey" value = "<% if (tautulliSettings && tautulliSettings.apikey) { %><%=tautulliSettings.apikey %><% } %>">
+    <input type = "text" class = "form-control" name = "apikey" value = "<% if (tautulliSettings && tautulliSettings.apikey) { %><%=tautulliSettings.apikey %><% } %>">
     <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
   </form>
 </div>
@@ -111,7 +114,7 @@
     <h2 class="h2-setting">URL Base</h2>
     <input type = "text" class = "form-control" name = "urlBase" value = "<% if (sonarrSettings && sonarrSettings.urlBase) { %><%=sonarrSettings.urlBase %><% } %>">
     <h2 class="h2-setting">API Key</h2>
-    <input type = "text" class = "form-control" name = "apiKey" value = "<% if (sonarrSettings && sonarrSettings.apikey) { %><%=sonarrSettings.apikey %><% } %>">
+    <input type = "text" class = "form-control" name = "apikey" value = "<% if (sonarrSettings && sonarrSettings.apikey) { %><%=sonarrSettings.apikey %><% } %>">
     <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
   </form>
 </div>
@@ -127,7 +130,7 @@
     <h2 class="h2-setting">URL Base</h2>
     <input type = "text" class = "form-control" name = "urlBase" value = "<% if (radarrSettings && radarrSettings.urlBase) { %><%=radarrSettings.urlBase %><% } %>">
     <h2 class="h2-setting">API Key</h2>
-    <input type = "text" class = "form-control" name = "apiKey" value = "<% if (radarrSettings && radarrSettings.apikey) { %><%=radarrSettings.apikey %><% } %>">
+    <input type = "text" class = "form-control" name = "apikey" value = "<% if (radarrSettings && radarrSettings.apikey) { %><%=radarrSettings.apikey %><% } %>">
     <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
   </form>
 </div>
