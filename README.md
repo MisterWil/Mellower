@@ -1,8 +1,6 @@
 # Mellower
 
-[![Build Status](https://travis-ci.com/MisterWil/Mellower.svg?branch=next)](https://travis-ci.com/MisterWil/Mellower)
-
-[![Coverage Status](https://coveralls.io/repos/github/MisterWil/Mellower/badge.svg?branch=next)](https://coveralls.io/github/MisterWil/Mellower?branch=next)
+[![Build Status](https://travis-ci.com/MisterWil/Mellower.svg?branch=next)](https://travis-ci.com/MisterWil/Mellower) [![Coverage Status](https://coveralls.io/repos/github/MisterWil/Mellower/badge.svg?branch=next)](https://coveralls.io/github/MisterWil/Mellower?branch=next)
 
 Discord Bot which can communicate with several APIs like Ombi, Sonarr, Radarr and Tautulli which are related to home streaming.
 
