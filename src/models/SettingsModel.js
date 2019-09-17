@@ -14,7 +14,7 @@ class SettingsModel extends Model {
    *
    * @param {*} settings
    */
-  async refresh ({ errorOnNotFound = false, populateFields = false } = {}) {
+  async refresh ({ errorOnNotFound = false, populateFields = false, populateFieldsDefault = null } = {}) {
     return this._sqlite.get('SELECT * FROM ' + this._tableName + ' WHERE id=1')
       .then(result => {
         this.setData(result)
@@ -24,7 +24,26 @@ class SettingsModel extends Model {
         log.debug('Failed to select data from table:', this.getTableName(), error)
         if (errorOnNotFound) return Promise.reject(error)
 
-        if (populateFields) return this.populateFields()
+        if (populateFields) return this.populateFields({ defaultVal: populateFieldsDefault })
+
+        return Promise.resolve(this)
+      })
+  }
+
+  /**
+   * Populate this Model with the columns in the table, if the table exists.
+   *
+   * Set the default value by using the defaultVal setting.
+   *
+   * @param {*} settings
+   */
+  async populateFields ({ defaultVal = null } = {}) {
+    return this._sqlite.all('PRAGMA table_info(' + this.getTableName() + ')')
+      .then(records => {
+        for (var i = 0; i < records.length; i++) {
+          if (records[i].name !== 'id') { this[records[i].name] = defaultVal }
+        }
+        return Promise.resolve(this)
       })
   }
 
@@ -42,23 +61,13 @@ class SettingsModel extends Model {
       .catch((error) => {
         log.info('Failed to run delete during save() on:', this.getTableName(), error)
 
-        if (errorOnDelete) Promise.reject(error)
+        if (errorOnDelete) return Promise.reject(error)
       })
 
     return this.insert()
       .catch((error) => {
         log.error('Failed to run insert during save() on:', this._tableName, error)
-      })
-  }
-
-  async populateFields () {
-    return this._sqlite.all('PRAGMA table_info(' + this.getTableName() + ')')
-      .then((records) => {
-        for (var i in records) {
-          if (records[i].name === 'id') continue
-
-          this[records[i].name] = null
-        }
+        return Promise.reject(error)
       })
   }
 
@@ -85,6 +94,7 @@ class SettingsModel extends Model {
                 ' (' + valueString + ')'
 
     return this._sqlite.run(insertSQL, values)
+      .then(() => Promise.resolve(this))
   }
 }
 
